@@ -971,4 +971,6 @@ public interface WebController {
      */
     String getPageSource() ;
 
+    boolean restart();
+
 }

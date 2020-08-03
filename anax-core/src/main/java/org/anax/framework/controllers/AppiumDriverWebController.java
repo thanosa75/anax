@@ -1,6 +1,7 @@
 package org.anax.framework.controllers;
 
 import lombok.extern.slf4j.Slf4j;
+import org.anax.framework.configuration.AnaxDriver;
 import org.anax.framework.util.HttpCookie;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -25,13 +26,17 @@ import java.util.Map;
 @Slf4j
 public class AppiumDriverWebController implements WebController{
 
+    /** Reference to the AnaxDriver which holds the construction method of This Controller **/
+    private final AnaxDriver anaxDriver;
+
     private WebDriver driver;
 
     /** The Constant THREAD_SLEEP. */
     private final long defaultWaitSeconds;
 
-    public AppiumDriverWebController(WebDriver webDriver, long defaultWaitSeconds) {
+    public AppiumDriverWebController(WebDriver webDriver, AnaxDriver anaxDriver, long defaultWaitSeconds) {
         this.driver = webDriver;
+        this.anaxDriver = anaxDriver;
         this.defaultWaitSeconds = defaultWaitSeconds;
     }
 
@@ -557,6 +562,17 @@ public class AppiumDriverWebController implements WebController{
     @Override
     public String getPageSource() {
         return null;
+    }
+
+    @Override
+    public boolean restart() {
+        try {
+            driver = anaxDriver.getWebDriver();
+            return true;
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return false;
+        }
     }
 
     /**

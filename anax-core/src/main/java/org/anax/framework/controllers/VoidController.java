@@ -623,6 +623,12 @@ public class VoidController implements WebController {
         // TODO Auto-generated method stub
         return null;
     }
+
+    @Override
+    public boolean restart() {
+        return false;
+    }
+
     @Override
     public List<WebElement> findElements(String locator, long waitSeconds) {
         return null;

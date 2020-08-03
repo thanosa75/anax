@@ -2,6 +2,7 @@ package org.anax.framework.controllers;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.anax.framework.configuration.AnaxDriver;
 import org.anax.framework.util.HttpCookie;
 import org.openqa.selenium.*;
 
@@ -9,6 +10,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
 import java.io.File;
@@ -18,6 +20,8 @@ import java.util.*;
 @Slf4j
 public class WebDriverWebController implements WebController {
 
+    /** Reference to the AnaxDriver which holds the construction method of This Controller **/
+    private final AnaxDriver anaxDriver;
 
     /** The driver. */
     private WebDriver driver;
@@ -44,8 +48,9 @@ public class WebDriverWebController implements WebController {
     /** The Constant ID. */
     private static final String ID = "id";
 
-    public WebDriverWebController(WebDriver webDriver, long defaultWaitSeconds) {
+    public WebDriverWebController(WebDriver webDriver, AnaxDriver anaxDriver, long defaultWaitSeconds) {
         this.driver = webDriver;
+        this.anaxDriver = anaxDriver;
         this.defaultWaitSeconds = defaultWaitSeconds;
     }
 
@@ -693,6 +698,17 @@ public class WebDriverWebController implements WebController {
     @Override
     public String getPageSource() {
         return driver.getPageSource();
+    }
+
+    @Override
+    public boolean restart() {
+        try {
+            driver = anaxDriver.getWebDriver();
+            return true;
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return false;
+        }
     }
 
     /*

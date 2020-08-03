@@ -72,7 +72,7 @@ public class AnaxRemoteDriver {
     @ConditionalOnMissingBean
     @Bean
     public WebController getWebController(@Autowired AnaxDriver anaxDriver, @Value("${anax.defaultWaitSeconds:5}") Integer defaultWaitSeconds) throws Exception {
-        return new WebDriverWebController(anaxDriver.getWebDriver(), defaultWaitSeconds);
+        return new WebDriverWebController(anaxDriver.getWebDriver(), anaxDriver, defaultWaitSeconds);
     }
 
 }
